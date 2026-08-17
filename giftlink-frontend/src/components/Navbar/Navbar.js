@@ -3,7 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AuthContext';
 
 export default function Navbar() {
-    const { isLoggedIn, setIsLoggedIn, userName, setUserName } = useAppContext();
+    const {
+        isLoggedIn,
+        setIsLoggedIn,
+        userName,
+        setUserName
+    } = useAppContext();
 
     const navigate = useNavigate();
 
@@ -11,23 +16,23 @@ export default function Navbar() {
         const authTokenFromSession = sessionStorage.getItem('auth-token');
         const nameFromSession = sessionStorage.getItem('name');
 
-        if (authTokenFromSession) {
-            if (isLoggedIn && nameFromSession) {
-                setUserName(nameFromSession);
-            } else {
-                sessionStorage.removeItem('auth-token');
-                sessionStorage.removeItem('name');
-                sessionStorage.removeItem('email');
-                setIsLoggedIn(false);
-            }
+        if (authTokenFromSession && nameFromSession) {
+            setIsLoggedIn(true);
+            setUserName(nameFromSession);
+        } else {
+            setIsLoggedIn(false);
+            setUserName('');
         }
-    }, [isLoggedIn, setIsLoggedIn, setUserName]);
+    }, [setIsLoggedIn, setUserName]);
 
     const handleLogout = () => {
         sessionStorage.removeItem('auth-token');
         sessionStorage.removeItem('name');
         sessionStorage.removeItem('email');
+
         setIsLoggedIn(false);
+        setUserName('');
+
         navigate('/app');
     };
 
@@ -36,12 +41,18 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light" id="navbar_container">
+        <nav
+            className="navbar navbar-expand-lg navbar-light bg-light"
+            id="navbar_container"
+        >
             <Link className="navbar-brand" to="/app">
                 GiftLink
             </Link>
 
-            <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div
+                className="collapse navbar-collapse justify-content-end"
+                id="navbarNav"
+            >
                 <ul className="navbar-nav">
 
                     <li className="nav-item">
@@ -67,7 +78,10 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <span
                                     className="nav-link"
-                                    style={{ color: 'black', cursor: 'pointer' }}
+                                    style={{
+                                        color: 'black',
+                                        cursor: 'pointer'
+                                    }}
                                     onClick={profileSection}
                                 >
                                     Welcome, {userName}
@@ -78,6 +92,10 @@ export default function Navbar() {
                                 <button
                                     className="nav-link login-btn"
                                     onClick={handleLogout}
+                                    style={{
+                                        border: 'none',
+                                        background: 'transparent'
+                                    }}
                                 >
                                     Logout
                                 </button>
@@ -86,13 +104,19 @@ export default function Navbar() {
                     ) : (
                         <>
                             <li className="nav-item">
-                                <Link className="nav-link login-btn" to="/app/login">
+                                <Link
+                                    className="nav-link login-btn"
+                                    to="/app/login"
+                                >
                                     Login
                                 </Link>
                             </li>
 
                             <li className="nav-item">
-                                <Link className="nav-link register-btn" to="/app/register">
+                                <Link
+                                    className="nav-link register-btn"
+                                    to="/app/register"
+                                >
                                     Register
                                 </Link>
                             </li>
