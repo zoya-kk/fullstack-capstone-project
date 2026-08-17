@@ -7,13 +7,12 @@ router.get('/', async (req, res, next) => {
     try {
         // Task 1: Connect to MongoDB
         const db = await connectToDatabase();
-
         const collection = db.collection("gifts");
 
         // Initialize the query object
         let query = {};
 
-        // Task 2: Add the name filter if name exists and is not empty
+        // Task 2: check if the name exists and is not empty
         if (req.query.name && req.query.name.trim() !== '') {
             query.name = {
                 $regex: req.query.name,
