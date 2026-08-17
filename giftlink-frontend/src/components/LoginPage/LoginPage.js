@@ -8,6 +8,25 @@ function LoginPage() {
 
     const handleLogin = async () => {
         console.log("Inside handleLogin");
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${password}`
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
     };
 
     return (
